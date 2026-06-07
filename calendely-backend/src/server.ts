@@ -1,12 +1,11 @@
-import { app } from './app';
-import {PORT} from './config/env';
+import { app } from './app.js';
+import { PORT } from './config/env.js';
 
 export function startServer() {
     app.listen(PORT, () => {
-        console.log(`[Server]: Running on port ${PORT}`);
+        console.log(`[server]: Running on port ${PORT}`)
     });
 }
 
+
 startServer();
-
-

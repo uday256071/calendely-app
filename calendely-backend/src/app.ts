@@ -1,12 +1,16 @@
+// Configures the setting for the express app object
+
 import express, { Express } from 'express';
 
 const app: Express = express();
 
-app.get('/health',(_req,res)=>{
+app.get('/health', (_req, res) => {
+
     res.json({
-        status:'ok',
-        timestamp:  new Date().toISOString()
+        status: 'ok!',
+        timestamp: new Date().toISOString()
     })
+
 });
 
-export   {app};
+export { app };

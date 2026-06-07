@@ -3,7 +3,6 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "rewriteRelativeImportExtensions": true, // TS 5.7+: The silver bullet
     "lib": ["ES2022"],
     "outDir": "./dist",
     "rootDir": ".",
