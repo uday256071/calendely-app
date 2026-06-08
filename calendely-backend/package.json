@@ -1,11 +1,11 @@
 {
-  "name": "CalendlyProject",
+  "name": "calendly-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec 'tsx src/server.ts'"
+    "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts"
   },
   "keywords": [],
   "author": "",
