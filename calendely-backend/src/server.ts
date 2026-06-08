@@ -1,13 +1,15 @@
-import { app } from './app.js';
-import { connectDatabase } from './config/database.js';
-import { PORT } from './config/env.js';
+import { app } from "./app.js";
+import { connectDatabase } from "./config/database.js";
+import { PORT } from "./config/env.js";
 
 export async function startServer() {
-    await connectDatabase();
-    app.listen(PORT, () => {
-        console.log(`[server]: Running on port ${PORT}`)
-    });
+  await connectDatabase();
+  app.listen(PORT, () => {
+    console.log(`[server]: Running on port ${PORT}`);
+  });
 }
 
-
-startServer();
+startServer().catch((err) => {
+  console.log("[Server]: Failed to start", err);
+  process.exit(1);
+});
