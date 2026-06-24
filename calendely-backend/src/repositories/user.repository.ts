@@ -13,3 +13,6 @@ export async function getById(id: number) {
   });
   return user;
 }
+
+// write function for create update delete
+
