@@ -6,3 +6,7 @@ export const createUserSchema = z.object({
 });
 
 export type CreateUserDto = z.infer<typeof createUserSchema>;
+
+export const updateUserSchema = createUserSchema.partial();
+
+export type UpdateUserDto = z.infer<typeof updateUserSchema>;

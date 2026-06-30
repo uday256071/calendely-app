@@ -30,3 +30,17 @@ export async function create(data: CreateUserDto) {
   return user;
 }
 
+export async function update(id: number, data: any) {
+  const user = prisma.user.update({
+    where: { id },
+    data,
+  });
+  return user;
+}
+
+export async function remove(id: number) {
+  const user = prisma.user.delete({
+    where: { id },
+  });
+  return user;
+}
