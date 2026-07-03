@@ -17,7 +17,6 @@ export async function findUserById(req: Request, res: Response) {
   const { id } = req.params;
   const response = await findUserByIdService(Number(id));
   sendSuccess(res, response);
-  res.json(response);
 }
 
 export async function createUser(req: Request, res: Response) {
