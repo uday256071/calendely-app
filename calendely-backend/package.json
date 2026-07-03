@@ -8,7 +8,8 @@
     "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
     "prisma:format": "npx prisma format",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate dev"
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:all": "npm run prisma:format && npm run prisma:generate && npm run prisma:migrate"
   },
   "keywords": [],
   "author": "",
