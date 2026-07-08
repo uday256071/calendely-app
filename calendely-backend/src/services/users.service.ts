@@ -1,3 +1,4 @@
+import { slugify } from "zod";
 import { CreateUserDto } from "../dtos/user.dto.js";
 import {
   create,
@@ -8,6 +9,7 @@ import {
   remove,
 } from "../repositories/user.repository.js";
 import { notFound } from "../utils/api-error.js";
+import slug from "slug";
 
 export async function findAllUsers() {
   const users = await getAll();
@@ -28,7 +30,10 @@ export async function createUser(data: CreateUserDto) {
     throw new Error("User already exists");
   }
 
-  const user = await create(data);
+  //TODo: make slug unique
+  const slugPassed = data.slug ? data.slug : slug(data.name,{lower:true});
+
+  const user = await create({...data,slug:slugPassed});
   return user;
 }
 
