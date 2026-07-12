@@ -77,8 +77,8 @@ model AvailabiltyException {
   userId    Int
   date      DateTime @db.Date
   type      String
-  startTime String // "HH:MM" format
-  endTime   String // "HH:MM" format
+  startTime String? // "HH:MM" format
+  endTime   String? // "HH:MM" format
   timezone  String   @default("UTC")
   reason    String?
   createdAt DateTime @default(now())
