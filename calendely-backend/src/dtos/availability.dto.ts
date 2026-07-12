@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createAvailabilityBaseSchema = z.object({
+export const createAvailabilityRuleBaseSchema = z.object({
   weekDay: z.number().int().min(0).max(6, "Weekday must be between 0 (Sunday) and 6 (Saturday)"),
   startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Start time must be in HH:MM format"),
   endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "End time must be in HH:MM format"),
@@ -8,16 +8,16 @@ export const createAvailabilityBaseSchema = z.object({
   timezone: z.string().optional().default("UTC"),
 });
 
-export const createAvailabilityRuleSchema = createAvailabilityBaseSchema.refine(rule => rule.startTime < rule.endTime, {
+export const createAvailabilityRuleSchema = createAvailabilityRuleBaseSchema.refine(rule => rule.startTime < rule.endTime, {
   message: "Start time must be before end time"
 });
 
-export const updateAvailabilityRuleSchema = createAvailabilityRuleSchema.partial();
+export const updateAvailabilityRuleSchema = createAvailabilityRuleBaseSchema.partial();
 
 export type CreateAvailabilityRuleDto = z.infer<typeof createAvailabilityRuleSchema>;
 export type UpdateAvailabilityRuleDto = z.infer<typeof updateAvailabilityRuleSchema>;
 
-export const createAvailabilityExceptionBaseSchema = z.object({
+export const availabilityExceptionBaseSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
   type: z.enum(["BLOCK_FULL_DAY", "BLOCK_PARTIAL", "ADD_AVAILABLE_WINDOW"]),
   startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Start time must be in HH:MM format").optional(),
@@ -26,7 +26,14 @@ export const createAvailabilityExceptionBaseSchema = z.object({
   reason: z.string().max(500, "Reason must be less than 500 characters").optional(),
 });
 
-export const createAvailabilityExceptionSchema = createAvailabilityExceptionBaseSchema.superRefine((data, ctx) => {
+export const createAvailabilityExceptionSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
+  type: z.enum(["BLOCK_FULL_DAY", "BLOCK_PARTIAL", "ADD_AVAILABLE_WINDOW"]),
+  startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Start time must be in HH:MM format").optional(),
+  endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "End time must be in HH:MM format").optional(),
+  timezone: z.string().optional().default("UTC"),
+  reason: z.string().max(500, "Reason must be less than 500 characters").optional(),
+}).superRefine((data, ctx) => {
   if(data.type !== "BLOCK_FULL_DAY") {
 
     if(!data.startTime || !data.endTime) {
@@ -38,7 +45,7 @@ export const createAvailabilityExceptionSchema = createAvailabilityExceptionBase
     }
     
 
-  if (data.startTime >= data.endTime) {
+  if (data.startTime && data.endTime && data.startTime >= data.endTime) {
     ctx.addIssue({
       code: "custom",
       message: 'Start time must be before end time',
@@ -48,7 +55,7 @@ export const createAvailabilityExceptionSchema = createAvailabilityExceptionBase
 }
 });
 
-export const updateAvailabilityExceptionSchema = createAvailabilityExceptionSchema.partial();
+export const updateAvailabilityExceptionSchema = availabilityExceptionBaseSchema.partial();
 
 export type CreateAvailabilityExceptionDto = z.infer<typeof createAvailabilityExceptionSchema>;
 export type UpdateAvailabilityExceptionDto = z.infer<typeof updateAvailabilityExceptionSchema>;
