@@ -77,6 +77,8 @@ export async function createException(userId: number, data: CreateAvailabilityEx
       userId,
       ...data,
       date: new Date(data.date),
+      startTime: data.startTime ?? "",
+      endTime: data.endTime ?? "",
     },
   });
 }
