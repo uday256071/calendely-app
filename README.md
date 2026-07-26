@@ -416,6 +416,9 @@ When expanding or contributing to this codebase, make sure to adhere to these ru
 5. **Database Syncing**: Always update the Prisma models within `prisma/schema.prisma` and execute `pnpm run prisma:all` to compile format changes and generate updated type bindings.
 
 
+11th July ---> 1:58
+
+
 
 
 

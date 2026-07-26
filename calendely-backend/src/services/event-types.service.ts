@@ -1,8 +1,9 @@
 import slug from "slug";
 import { CreateEventTypeDto, UpdateEventTypeDto } from "../dtos/event-type.dto.js";
-import { create, findActiveByHostAndEventSlug, findByHostId, findById, remove, slugExistsForHost, update } from "../repositories/event-type-repository.js";
+import { create, findActiveByHostAndEventSlug, findByHostId, findById, remove, slugExistsForHost, update } from "../repositories/event-type.repository.js";
 import { conflict, notFound } from "../utils/api-error.js";
 import { getById as getUserById } from "../repositories/user.repository.js";
+import { startRegenerateHostSlotsWorkflow } from "../temporal/client.js";
 
 export async function listEventTypes(hostId: number){
     const eventTypes = await findByHostId(hostId);
@@ -21,6 +22,7 @@ export async function createEventType(hostId: number, data: CreateEventTypeDto){
     }
 
     const eventType = await create(hostId, {...data, slug:slugPassed});
+    await startRegenerateHostSlotsWorkflow({hostId})
     return eventType;
 }
 

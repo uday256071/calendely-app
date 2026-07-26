@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { badRequest, unauthorized } from "../utils/api-error.js";
+import { badRequest, unauthorized, notFound } from "../utils/api-error.js";
+import { getById } from "../repositories/user.repository.js";
 
 declare global {
   namespace Express {
@@ -9,7 +10,7 @@ declare global {
   }
 }
 
-export function requireUserid(req: Request, _res: Response, next: NextFunction) {
+export async function requireUserid(req: Request, _res: Response, next: NextFunction) {
   const userIdHeader = req.headers["x-user-id"];
   if (!userIdHeader || Array.isArray(userIdHeader) || typeof userIdHeader !== "string") {
     throw unauthorized("User ID is required in headers");
@@ -18,6 +19,11 @@ export function requireUserid(req: Request, _res: Response, next: NextFunction) 
   const userId = Number(userIdHeader);
   if (Number.isNaN(userId)) {
     throw badRequest("Invalid User ID in headers");
+  }
+
+  const user = await getById(userId);
+  if (!user) {
+    throw notFound(`User with ID ${userId} not found`);
   }
 
   req.userId = userId;

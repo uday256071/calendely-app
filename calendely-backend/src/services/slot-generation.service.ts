@@ -159,3 +159,23 @@ export function applyExceptionsForDate(
     return mergeWindows(windows);
 
 }
+
+export function windowsForWeekdayRule(date:DateTime, weekday:number, startTime:string, endTime:string,timeZone:string): TimeWindow[]{
+    const localDate = date.setZone(timeZone).startOf('day');
+    const luxonWeekday = weekday === 0 ? 7 : weekday;
+
+    // If the weekday of the date does not match the weekday of the rule, return empty windows
+    if(localDate.weekday !== luxonWeekday) return [];
+
+    // create start and end datetimes using parseTimeOnDate
+    const start= parseTimeOnDate(localDate, startTime, timeZone);
+    const end = parseTimeOnDate(localDate, endTime, timeZone);
+
+    if (!start.isValid || !end.isValid || start >= end) return [];
+
+    // return the window
+    return [{
+        start,
+        end,
+    }];
+}

@@ -15,7 +15,7 @@ import {
   createException as createExceptionRepo,
   updateException as updateExceptionRepo,
   removeException as removeExceptionRepo,
-} from "../repositories/availability-repository.js";
+} from "../repositories/availability.repository.js";
 import { conflict, notFound } from "../utils/api-error.js";
 
 // --- Availability Rules ---
