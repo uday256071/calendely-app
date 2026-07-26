@@ -91,7 +91,7 @@ model AvailabiltyException {
 }
 
 model Slot {
-  id          String      @id @default(cuid())
+  id          String   @id @default(cuid())
   hostId      Int
   eventTypeId Int
   startAt     DateTime @db.Timestamp
